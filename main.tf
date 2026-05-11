@@ -18,8 +18,7 @@ module "vpc" {
   name = "${local.name}-vpc"
   cidr = "10.20.0.0/16"
 
-  azs = local.azs
-
+  azs             = local.azs
   public_subnets  = ["10.20.1.0/24", "10.20.2.0/24"]
   private_subnets = ["10.20.11.0/24", "10.20.12.0/24"]
 
@@ -50,9 +49,9 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  enable_cluster_creator_admin_permissions = true
-
   cluster_endpoint_public_access = true
+
+  enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
     default = {
