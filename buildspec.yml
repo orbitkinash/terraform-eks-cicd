@@ -7,17 +7,29 @@ env:
 phases:
   install:
     commands:
+      - echo "Installing Terraform ${TF_VERSION}"
       - yum install -y unzip
       - curl -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
-      - unzip terraform.zip
+      - unzip -o terraform.zip
       - mv terraform /usr/local/bin/
       - terraform version
 
   pre_build:
     commands:
+      - echo "Initializing Terraform"
       - terraform init
+      - echo "Checking Terraform formatting"
+      - terraform fmt -check
+      - echo "Validating Terraform"
+      - terraform validate
 
   build:
     commands:
+      - echo "Running Terraform plan"
+      - terraform plan -out=tfplan
+      - echo "Applying Terraform"
       - terraform apply -auto-approve tfplan
-      - terraform output
+
+artifacts:
+  files:
+    - '**/*'
