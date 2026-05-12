@@ -37,22 +37,6 @@ module "vpc" {
     "kubernetes.io/role/internal-elb" = 1
   }
 
-  access_entries = {
-    local_admin = {
-      principal_arn = "arn:aws:iam::767397740308:user/eks-admin-user"
-
-      policy_associations = {
-        cluster_admin = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-
-          access_scope = {
-            type = "cluster"
-          }
-        }
-      }
-    }
-  }
-
   tags = local.tags
 }
 
@@ -84,6 +68,22 @@ module "eks" {
 
       instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
+    }
+  }
+
+  access_entries = {
+    local_admin = {
+      principal_arn = "arn:aws:iam::767397740308:user/eks-admin-user"
+
+      policy_associations = {
+        cluster_admin = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+          access_scope = {
+            type = "cluster"
+          }
+        }
+      }
     }
   }
 
